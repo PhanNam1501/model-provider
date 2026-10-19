@@ -71,6 +71,8 @@ func (f *fakeservice) uploadfile(jobId uuid.UUID, file *multipart.FileHeader, ds
 	defer out.Close()
 
 	written, err := io.Copy(out, src)
+	f.mutex.Lock()
+	defer f.mutex.Unlock()
 	if err != nil {
 		f.jobErrors[jobId] = err.Error()
 	} else {
