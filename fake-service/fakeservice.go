@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"sync"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -179,11 +180,13 @@ func (f *fakeservice) CheckStatus(c *gin.Context) {
 		delete(f.jobResult, jobid)
 		delete(f.jobCallCnt, jobid)
 		delete(f.jobCallErrorCnt, jobid)
+		time.Sleep(time.Duration(rand.Intn(2001)+1000) * time.Millisecond)
 		inputToken, outputToken, prices := f.calculate(count)
 		c.JSON(http.StatusOK, ResultResponse{
 			InputToken:  inputToken,
 			OutputToken: outputToken,
 			Prices:      prices,
 		})
+
 	}
 }
